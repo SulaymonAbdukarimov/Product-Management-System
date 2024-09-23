@@ -1,0 +1,87 @@
+<form nz-form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="name">Product Name</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input
+        nz-input
+        formControlName="name"
+        id="name"
+        placeholder="Enter product name"
+      />
+      @if (productForm.get('name')?.invalid &&
+      productForm.get('name')?.touched){
+      <span class="warning__text"> Product name is required. </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="price">Price</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input
+        nz-input
+        type="number"
+        formControlName="price"
+        id="price"
+        placeholder="Enter product price"
+      />
+      @if (productForm.get('price')?.invalid &&
+      productForm.get('price')?.touched) {
+      <span class="warning__text"> Price must be a number. </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="category">Category</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-select formControlName="category" nzPlaceHolder="Select a category">
+        @for (category of categories; track $index) {
+        <nz-option [nzValue]="category" [nzLabel]="category"></nz-option>
+        }
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="description">Description</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea
+        nz-input
+        formControlName="description"
+        placeholder="Enter product description"
+        [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="sku">Product SKU</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input
+        nz-input
+        formControlName="sku"
+        id="sku"
+        placeholder="Enter product sku"
+      />
+      @if (productForm.get('sku')?.invalid && productForm.get('sku')?.touched){
+      <span class="warning__text"> Product sku is required. </span>
+      }
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="stock">Stock</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <label nz-checkbox formControlName="stock">In Stock</label>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary" [disabled]="productForm.invalid">
+        Submit
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -1,0 +1,64 @@
+<div class="header">
+  <div class="search__input-container">
+    <input
+      nz-input
+      placeholder="Search by product name"
+      type="text"
+      nzSize="large"
+      #search
+      (keyup)="updateProductSearchTerm(search.value)"
+    />
+  </div>
+  <button nz-button nzType="primary" nzSize="large" routerLink="/products/add">
+    Add Product
+  </button>
+</div>
+
+<nz-table
+  #basicTable
+  [nzData]="allProducts()"
+  nzShowSizeChanger
+  [nzPageSize]="10"
+  [nzBordered]="true"
+  [nzScroll]="{ x: '1150px', y: '70vh' }"
+>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Product Name</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th>Stock Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let product of basicTable.data; trackBy: trackByProductId"
+      [routerLink]="['/product-details', product.id]"
+    >
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.stock }}</td>
+      <td class="action__btns-container">
+        <button
+          nz-button
+          nzType="primary"
+          (click)="editProduct($event, product.id)"
+        >
+          Edit
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="deleteProduct($event, product.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

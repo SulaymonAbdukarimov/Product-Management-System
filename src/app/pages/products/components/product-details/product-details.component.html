@@ -1,0 +1,13 @@
+<button nz-button nzType="primary" (click)="backToList()">Back to List</button>
+
+<nz-card>
+  <nz-card-meta
+    nzTitle="{{ product()?.name }}"
+    nzDescription="SKU: {{ product()?.sku }}"
+  >
+  </nz-card-meta>
+  <p>Price: {{ product()?.price }}</p>
+  <p>Category: {{ product()?.category }}</p>
+  <p>Stock: {{ product()?.stock }}</p>
+  <p>Description: {{ product()?.description || "No description available" }}</p>
+</nz-card>
