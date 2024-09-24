@@ -3,7 +3,7 @@
   {{ "back_to_list" | translate }}
 </button>
 
-<form nz-form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+<form nz-form [formGroup]="productForm" (ngSubmit)="onSubmit()" @slideIn>
   <nz-form-item>
     <nz-form-label [nzSpan]="6" nzFor="name">{{
       "product_name" | translate

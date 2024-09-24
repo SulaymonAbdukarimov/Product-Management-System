@@ -20,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Notification } from '../../../../shared/decorators';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-product-form',
@@ -37,6 +38,23 @@ import { Notification } from '../../../../shared/decorators';
     NzIconModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateY(-20px)', opacity: 0 }),
+        animate(
+          '300ms ease-in',
+          style({ transform: 'translateY(0)', opacity: 1 })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '300ms ease-out',
+          style({ transform: 'translateY(-20px)', opacity: 0 })
+        ),
+      ]),
+    ]),
+  ],
 })
 export default class ProductFormComponent implements OnInit {
   private fb = inject(FormBuilder);
