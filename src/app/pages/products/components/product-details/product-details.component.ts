@@ -18,36 +18,47 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
-  imports: [NzCardModule, NzButtonModule, TranslateModule, CurrencyPipe, NzIconModule],
+  imports: [
+    NzCardModule,
+    NzButtonModule,
+    TranslateModule,
+    CurrencyPipe,
+    NzIconModule,
+  ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private $productService = inject(ProductService);
-  private translate = inject(TranslateService)
+  private productService = inject(ProductService);
+  private translate = inject(TranslateService);
 
   product = signal<Product | undefined>(undefined);
   loading = signal<boolean>(true);
 
   ngOnInit(): void {
+    this.loadProductById();
+  }
+
+  backToList() {
+    this.router.navigate(['/products']);
+  }
+
+  productMetaDescription(): string {
+    const sku = this.product()?.sku
+      ? this.product()?.sku
+      : this.translate.instant('no_sku');
+    return `${this.translate.instant('sku')}: ${sku}`;
+  }
+
+  private loadProductById(): void {
     this.route.params.subscribe((params) => {
       const id = Number(params['id']);
-      this.$productService.getProductById(id).subscribe((product) => {
+      this.productService.getProductById(id).subscribe((product) => {
         this.product.set(product);
         this.loading.set(false);
       });
     });
   }
-  backToList() {
-    this.router.navigate(['/products']);
-  }
-
-
-  productMetaDescription(): string {
-    const sku = this.product()?.sku ? this.product()?.sku : this.translate.instant('no_sku');
-    return `${this.translate.instant('sku')}: ${sku}`;
-  }
-
 }

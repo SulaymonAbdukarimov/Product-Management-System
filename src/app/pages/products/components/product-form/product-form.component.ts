@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   OnInit,
 } from '@angular/core';
@@ -23,6 +24,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-form',
@@ -37,7 +39,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzButtonModule,
     NzCheckboxModule,
     TranslateModule,
-    NzIconModule
+    NzIconModule,
   ],
   providers: [NzNotificationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,6 +49,7 @@ export default class ProductFormComponent implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
   private notification = inject(NzNotificationService);
 
   productForm!: FormGroup;
@@ -75,30 +78,34 @@ export default class ProductFormComponent implements OnInit {
   private loadProduct(): void {
     this.route.params.subscribe((params) => {
       this.editingProductId = Number(params['id']);
-
       if (this.editingProductId) {
-        this.productService
-          .getProductById(this.editingProductId)
-          .pipe(
-            tap((product) => {
-              if (product) {
-                this.editingProduct = product;
-                this.productForm.patchValue(product);
-              } else {
-                this.navigateToProducts()
-              }
-            }),
-            catchError(() => {
-              this.navigateToProducts()
-              return EMPTY;
-            })
-          )
-          .subscribe();
+        this.handleEditProduct();
       }
       if (!this.editingProductId && this.router.url.includes('edit')) {
-        this.navigateToProducts()
+        this.navigateToProducts();
       }
     });
+  }
+
+  private handleEditProduct(): void {
+    this.productService
+      .getProductById(this.editingProductId)
+      .pipe(
+        tap((product) => {
+          if (product) {
+            this.editingProduct = product;
+            this.productForm.patchValue(product);
+          } else {
+            this.navigateToProducts();
+          }
+        }),
+        catchError(() => {
+          this.navigateToProducts();
+          return EMPTY;
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
   }
 
   private initForm(): void {

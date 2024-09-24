@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  HostListener,
   inject,
   OnInit,
   signal,
@@ -9,7 +10,7 @@ import {
 import { ProductService } from './services/product.service';
 import { Product } from '../../constants';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { CurrencyPipe, NgFor } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -20,12 +21,12 @@ import {
   map,
   Subject,
   switchMap,
-  tap,
 } from 'rxjs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TranslateModule } from '@ngx-translate/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-products',
@@ -33,13 +34,13 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './products.component.scss',
   imports: [
     NzTableModule,
-    NgFor,
     CurrencyPipe,
     NzButtonModule,
     RouterLink,
     NzInputModule,
     FormsModule,
-    TranslateModule
+    TranslateModule,
+    NzIconModule,
   ],
   providers: [NzModalService, NzNotificationService],
   standalone: true,
@@ -54,8 +55,14 @@ export default class ProductsComponents implements OnInit {
 
   allProducts = signal<Product[]>([]);
   searchInput$ = new Subject<string>();
+  isMobile = signal<boolean>(false);
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobile.set(window.innerWidth < 768);
+  }
 
   ngOnInit(): void {
+    this.isMobile.set(window.innerWidth < 768);
     this.getProductsList();
     this.initializeSearchListener();
   }

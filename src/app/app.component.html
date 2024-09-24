@@ -1,37 +1,69 @@
 <nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
-    [nzTrigger]="null">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+    [nzCollapsedWidth]="isMobile() ? 0 : 80"
+  >
+    >
     <div class="sidebar-logo">
       <a href="https://www.sqb.uz/uz/individuals/" target="_blank">
-        <img src="https://marketing.uz/uploads/articles/2373/article-original.png" alt="logo" />
-        <h1>{{ 'product_management' | translate }}</h1>
+        <img
+          src="https://marketing.uz/uploads/articles/2373/article-original.png"
+          alt="logo"
+        />
+        <h1>{{ "product_management" | translate }}</h1>
       </a>
     </div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
       <li nz-submenu nzOpen [nzTitle]="'products' | translate" nzIcon="product">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/products">{{ 'product_list' | translate }}</a>
+            <a routerLink="/products">{{ "product_list" | translate }}</a>
           </li>
         </ul>
       </li>
     </ul>
   </nz-sider>
+
+  @if (isMobile() && !isCollapsed) {
+  <div class="overlay" (click)="this.isCollapsed = true"></div>
+  }
+
   <nz-layout>
     <nz-header>
       <div class="app-header">
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-          <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+          <span
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          ></span>
         </span>
         <div>
-          <nz-select [(ngModel)]="selectedLang" (ngModelChange)="changeLanguage()">
-            <nz-option *ngFor="let option of languagesOptionList" [nzLabel]="option.label | translate"
-              [nzValue]="option.value"></nz-option>
-            <nz-option [nzLabel]="'default_value' | translate" nzValue="Default" nzHide></nz-option>
+          <nz-select
+            [(ngModel)]="selectedLanguage"
+            (ngModelChange)="changeLanguage()"
+          >
+            @for (option of languagesOptionList; track trackByValue) {
+            <nz-option
+              [nzLabel]="option.label | translate"
+              [nzValue]="option.value"
+            ></nz-option>
+            }
           </nz-select>
         </div>
       </div>
     </nz-header>
+
     <nz-content>
       <div class="inner-content">
         <router-outlet></router-outlet>
