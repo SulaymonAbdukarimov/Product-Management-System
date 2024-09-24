@@ -54,9 +54,17 @@ export default class ProductDetailsComponent implements OnInit {
   private loadProductById(): void {
     this.route.params.subscribe((params) => {
       const id = Number(params['id']);
-      this.productService.getProductById(id).subscribe((product) => {
-        this.product.set(product);
-      });
+      if (id) {
+        this.productService.getProductById(id).subscribe((product) => {
+          if (product) {
+            this.product.set(product);
+          } else {
+            this.backToList();
+          }
+        });
+      } else {
+        this.backToList();
+      }
     });
   }
 }

@@ -40,9 +40,9 @@ export class AppComponent implements OnInit {
   private translateService = inject(TranslateService);
   private storageService = inject(StorageService);
 
+  readonly languagesOptionList = AVAILABLE_LANGS;
   isCollapsed = false;
   selectedLanguage = '';
-  readonly languagesOptionList = AVAILABLE_LANGS;
   isMobile = signal<boolean>(false);
 
   constructor(injector: Injector) {
