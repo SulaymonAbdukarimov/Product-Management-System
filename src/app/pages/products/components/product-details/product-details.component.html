@@ -1,13 +1,18 @@
-<button nz-button nzType="primary" (click)="backToList()">Back to List</button>
+<button nz-button nzType="primary" (click)="backToList()" class="back-btn">
+  <span nz-icon nzType="left"></span>
+  {{ 'back_to_list' | translate }}
+</button>
 
-<nz-card>
-  <nz-card-meta
-    nzTitle="{{ product()?.name }}"
-    nzDescription="SKU: {{ product()?.sku }}"
-  >
-  </nz-card-meta>
-  <p>Price: {{ product()?.price }}</p>
-  <p>Category: {{ product()?.category }}</p>
-  <p>Stock: {{ product()?.stock }}</p>
-  <p>Description: {{ product()?.description || "No description available" }}</p>
+<nz-card class="product-card">
+  <nz-card-meta [nzTitle]="product()?.name!" [nzDescription]="productMetaDescription()"></nz-card-meta>
+  <div class="product-details">
+    <p>{{ 'price' | translate }}: {{ product()?.price | currency }}</p>
+    <p>{{ 'category' | translate }}: {{ product()?.category }}</p>
+    <p>{{ 'stock' | translate }}: {{ product()?.stock }}</p>
+    <p>
+      {{ 'description' | translate }}: {{
+      product()?.description || ('no_description' | translate)
+      }}
+    </p>
+  </div>
 </nz-card>

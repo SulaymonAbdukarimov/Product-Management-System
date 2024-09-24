@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from '../../../constants';
-import { products } from './product.data';
+import { products } from './data/product.data';
 
 @Injectable({
   providedIn: 'root',

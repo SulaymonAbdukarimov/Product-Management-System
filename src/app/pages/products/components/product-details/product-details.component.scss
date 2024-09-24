@@ -4,3 +4,46 @@
 button {
   margin-bottom: 20px;
 }
+.back-btn {
+  margin-bottom: 1rem;
+  white-space: nowrap;
+}
+
+.product-card {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+
+  .product-details {
+    margin-top: 1rem;
+
+    p {
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    padding: 0.5rem;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
+
+  .product-details p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .product-card {
+    padding: 1.5rem;
+  }
+
+  .product-details p {
+    font-size: 1rem;
+  }
+}

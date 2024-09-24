@@ -1,41 +1,39 @@
+<button nz-button nzType="primary" (click)="navigateToProducts()">
+  <span nz-icon nzType="left"></span>
+  {{ 'back_to_list' | translate }}
+</button>
+
+
 <form nz-form [formGroup]="productForm" (ngSubmit)="onSubmit()">
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="name">Product Name</nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="name">{{ 'product_name' | translate }}</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <input
-        nz-input
-        formControlName="name"
-        id="name"
-        placeholder="Enter product name"
-      />
-      @if (productForm.get('name')?.invalid &&
-      productForm.get('name')?.touched){
-      <span class="warning__text"> Product name is required. </span>
+      <input nz-input formControlName="name" id="name" [placeholder]="'enter_product_name' | translate" />
+      @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+      <span class="warning__text">
+        {{ 'product_name_required' | translate }}
+      </span>
+      }
+
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="price">{{ 'price' | translate }}</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input type="number" formControlName="price" id="price" [placeholder]="'enter_price' | translate" />
+      @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+      <span class="warning__text">
+        {{ 'price_required' | translate }}
+      </span>
       }
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="price">Price</nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="category">{{ 'category' | translate }}</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <input
-        nz-input
-        type="number"
-        formControlName="price"
-        id="price"
-        placeholder="Enter product price"
-      />
-      @if (productForm.get('price')?.invalid &&
-      productForm.get('price')?.touched) {
-      <span class="warning__text"> Price must be a number. </span>
-      }
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="category">Category</nz-form-label>
-    <nz-form-control [nzSpan]="14">
-      <nz-select formControlName="category" nzPlaceHolder="Select a category">
+      <nz-select formControlName="category" [nzPlaceHolder]="'select_category' | translate">
         @for (category of categories; track $index) {
         <nz-option [nzValue]="category" [nzLabel]="category"></nz-option>
         }
@@ -44,43 +42,37 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="description">Description</nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="description">{{ 'description' | translate }}</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <textarea
-        nz-input
-        formControlName="description"
-        placeholder="Enter product description"
-        [nzAutosize]="{ minRows: 2, maxRows: 6 }"
-      ></textarea>
+      <textarea nz-input formControlName="description" [placeholder]="'enter_description' | translate"
+        [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="sku">Product SKU</nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="sku">{{ 'sku' | translate }}</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <input
-        nz-input
-        formControlName="sku"
-        id="sku"
-        placeholder="Enter product sku"
-      />
-      @if (productForm.get('sku')?.invalid && productForm.get('sku')?.touched){
-      <span class="warning__text"> Product sku is required. </span>
+      <input nz-input formControlName="sku" id="sku" [placeholder]="'enter_sku' | translate" />
+      @if (productForm.get('sku')?.invalid && productForm.get('sku')?.touched) {
+      <span class="warning__text">
+        {{ 'sku_required' | translate }}
+      </span>
       }
+
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="stock">Stock</nz-form-label>
+    <nz-form-label [nzSpan]="6" nzFor="stock">{{ 'stock' | translate }}</nz-form-label>
     <nz-form-control [nzSpan]="14">
-      <label nz-checkbox formControlName="stock">In Stock</label>
+      <label nz-checkbox formControlName="stock">{{ 'is_stock_available' | translate }}</label>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-control [nzSpan]="14" [nzOffset]="6">
       <button nz-button nzType="primary" [disabled]="productForm.invalid">
-        Submit
+        {{ 'submit' | translate }}
       </button>
     </nz-form-control>
   </nz-form-item>

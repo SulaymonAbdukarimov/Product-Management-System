@@ -21,6 +21,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { positivePriceValidator } from './validators/positive-price';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { TranslateModule } from '@ngx-translate/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-product-form',
@@ -34,6 +36,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
     NzInputModule,
     NzButtonModule,
     NzCheckboxModule,
+    TranslateModule,
+    NzIconModule
   ],
   providers: [NzNotificationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,18 +85,18 @@ export default class ProductFormComponent implements OnInit {
                 this.editingProduct = product;
                 this.productForm.patchValue(product);
               } else {
-                this.router.navigate(['/products']);
+                this.navigateToProducts()
               }
             }),
             catchError(() => {
-              this.router.navigate(['/products']);
+              this.navigateToProducts()
               return EMPTY;
             })
           )
           .subscribe();
       }
       if (!this.editingProductId && this.router.url.includes('edit')) {
-        this.router.navigate(['/products']);
+        this.navigateToProducts()
       }
     });
   }
@@ -135,7 +139,7 @@ export default class ProductFormComponent implements OnInit {
     });
   }
 
-  private navigateToProducts(): void {
+  navigateToProducts(): void {
     this.router.navigate(['/products']);
   }
 }

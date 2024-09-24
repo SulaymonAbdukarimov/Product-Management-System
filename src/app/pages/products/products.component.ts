@@ -25,6 +25,7 @@ import {
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products',
@@ -38,6 +39,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
     RouterLink,
     NzInputModule,
     FormsModule,
+    TranslateModule
   ],
   providers: [NzModalService, NzNotificationService],
   standalone: true,

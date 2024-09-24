@@ -1,62 +1,41 @@
 <div class="header">
   <div class="search__input-container">
-    <input
-      nz-input
-      placeholder="Search by product name"
-      type="text"
-      nzSize="large"
-      #search
-      (keyup)="updateProductSearchTerm(search.value)"
-    />
+    <input nz-input placeholder="{{ 'search_placeholder' | translate }}" type="text" nzSize="large" #search
+      (keyup)="updateProductSearchTerm(search.value)" aria-label="Search Products" />
   </div>
-  <button nz-button nzType="primary" nzSize="large" routerLink="/products/add">
-    Add Product
+  <button nz-button nzType="primary" nzSize="large" routerLink="/products/add" class="add-btn"
+    aria-label="Add New Product">
+    {{ 'add_product' | translate }}
   </button>
 </div>
 
-<nz-table
-  #basicTable
-  [nzData]="allProducts()"
-  nzShowSizeChanger
-  [nzPageSize]="10"
-  [nzBordered]="true"
-  [nzScroll]="{ x: '1150px', y: '70vh' }"
->
+<nz-table #basicTable [nzData]="allProducts()" nzShowSizeChanger [nzPageSize]="10" [nzBordered]="true"
+  [nzScroll]="{ x: '1150px', y: '50vh' }" class="product-table" aria-label="Product Table">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Product Name</th>
-      <th>Price</th>
-      <th>Category</th>
-      <th>Stock Status</th>
-      <th>Actions</th>
+      <th>{{ 'id' | translate }}</th>
+      <th>{{ 'product_name' | translate }}</th>
+      <th>{{ 'price' | translate }}</th>
+      <th>{{ 'category' | translate }}</th>
+      <th>{{ 'stock_status' | translate }}</th>
+      <th>{{ 'actions' | translate }}</th>
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let product of basicTable.data; trackBy: trackByProductId"
-      [routerLink]="['/product-details', product.id]"
-    >
+    <tr *ngFor="let product of basicTable.data; trackBy: trackByProductId"
+      [routerLink]="['/product-details', product.id]" class="product-row" tabindex="0">
       <td>{{ product.id }}</td>
       <td>{{ product.name }}</td>
       <td>{{ product.price }}</td>
       <td>{{ product.category }}</td>
       <td>{{ product.stock }}</td>
       <td class="action__btns-container">
-        <button
-          nz-button
-          nzType="primary"
-          (click)="editProduct($event, product.id)"
-        >
-          Edit
+        <button nz-button nzType="primary" (click)="editProduct($event, product.id)" aria-label="Edit Product">
+          {{ 'edit' | translate }}
         </button>
-        <button
-          nz-button
-          nzType="primary"
-          nzDanger
-          (click)="deleteProduct($event, product.id)"
-        >
-          Delete
+        <button nz-button nzType="primary" nzDanger (click)="deleteProduct($event, product.id)"
+          aria-label="Delete Product">
+          {{ 'delete' | translate }}
         </button>
       </td>
     </tr>
