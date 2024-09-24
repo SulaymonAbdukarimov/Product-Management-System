@@ -27,5 +27,9 @@
   "products": "Продукты",
   "product_list": "Список продуктов",
   "product_management": "Управление продуктами",
-  "default_value": "Значение по умолчанию"
+  "default_value": "Значение по умолчанию",
+  "stock_detail": {
+    "in": "В наличии",
+    "out": "Нет в наличии"
+  }
 }

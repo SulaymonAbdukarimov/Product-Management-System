@@ -19,14 +19,16 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
+  Observable,
   Subject,
   switchMap,
 } from 'rxjs';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { DeleteConfirmation, Notification } from '../../shared/decorators';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
   selector: 'app-products',
@@ -41,21 +43,25 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     FormsModule,
     TranslateModule,
     NzIconModule,
+    NzCardModule,
   ],
-  providers: [NzModalService, NzNotificationService],
+  providers: [NzNotificationService],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductsComponents implements OnInit {
+  //#region PRIVATE PROPERTIES
   private productService = inject(ProductService);
-  private modalService = inject(NzModalService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  private notification = inject(NzNotificationService);
+  //#endregion
 
+  //#region PUBLIC PROPERTIES
   allProducts = signal<Product[]>([]);
   searchInput$ = new Subject<string>();
   isMobile = signal<boolean>(false);
+  //#endregion
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isMobile.set(window.innerWidth < 768);
@@ -69,21 +75,17 @@ export default class ProductsComponents implements OnInit {
 
   deleteProduct(event: Event, id: number): void {
     event.stopPropagation();
-    this.modalService.confirm({
-      nzTitle: 'Are you sure you want to delete this product?',
-      nzOnOk: () => {
-        this.productService.deleteProduct(id).subscribe(() => {
-          let productsValue = this.allProducts();
-          productsValue.filter((product) => product.id !== id);
-          this.allProducts.set(productsValue);
-          this.notification.create(
-            'success',
-            'Successfully deleted!',
-            'You can see deleted product is not exist in the list.'
-          );
-        });
-      },
-    });
+    this.confirmToDelete(id);
+  }
+
+  @DeleteConfirmation()
+  @Notification(
+    'success',
+    'Product successfully deleted!',
+    'Failed to delete the product'
+  )
+  confirmToDelete(id: number): Observable<boolean> {
+    return this.productService.deleteProduct(id);
   }
 
   editProduct(event: Event, id: number): void {
@@ -93,10 +95,6 @@ export default class ProductsComponents implements OnInit {
 
   updateProductSearchTerm(searchTerm: string) {
     this.searchInput$.next(searchTerm);
-  }
-
-  trackByProductId(index: number, product: Product): number {
-    return product.id;
   }
 
   private initializeSearchListener() {
@@ -113,7 +111,7 @@ export default class ProductsComponents implements OnInit {
   }
 
   private filterProductsByName(term: string) {
-    return this.productService.getProducts().pipe(
+    return this.productService.products$.pipe(
       map((products) =>
         products.filter((product) =>
           product.name.toLowerCase().includes(term.toLowerCase())
@@ -124,8 +122,7 @@ export default class ProductsComponents implements OnInit {
   }
 
   private getProductsList() {
-    this.productService
-      .getProducts()
+    this.productService.products$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((products) => {
         this.allProducts.set(products);

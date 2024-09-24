@@ -5,13 +5,8 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Product, ProductCategory } from '../../../../constants';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IProduct, Product, ProductCategory } from '../../../../constants';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -20,11 +15,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { positivePriceValidator } from './validators/positive-price';
-import { catchError, EMPTY, tap } from 'rxjs';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Notification } from '../../../../shared/decorators';
 
 @Component({
   selector: 'app-product-form',
@@ -41,7 +36,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     TranslateModule,
     NzIconModule,
   ],
-  providers: [NzNotificationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductFormComponent implements OnInit {
@@ -50,15 +44,24 @@ export default class ProductFormComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
-  private notification = inject(NzNotificationService);
 
-  productForm!: FormGroup;
+  productForm = this.fb.nonNullable.group({
+    name: ['', Validators.required],
+    price: [
+      0,
+      [Validators.required, Validators.min(0), positivePriceValidator],
+    ],
+    category: [ProductCategory.BOOKS, Validators.required],
+    description: [''],
+    stock: [false, Validators.required],
+    sku: ['', Validators.required],
+  });
+
   editingProduct: Product | null = null;
   categories = Object.values(ProductCategory);
   editingProductId!: number;
 
   ngOnInit(): void {
-    this.initForm();
     this.loadProduct();
   }
 
@@ -67,7 +70,7 @@ export default class ProductFormComponent implements OnInit {
       return;
     }
 
-    const product: Product = this.productForm.value;
+    const product: IProduct = this.productForm.getRawValue();
     if (this.editingProduct) {
       this.updateProduct(product);
     } else {
@@ -108,42 +111,30 @@ export default class ProductFormComponent implements OnInit {
       .subscribe();
   }
 
-  private initForm(): void {
-    this.productForm = this.fb.group({
-      name: ['', Validators.required],
-      price: [
-        null,
-        [Validators.required, Validators.min(0), positivePriceValidator],
-      ],
-      category: ['', Validators.required],
-      description: [''],
-      stock: [false, Validators.required],
-      sku: ['', Validators.required],
-    });
-  }
-
-  private updateProduct(product: Product): void {
-    this.productService
-      .editProduct(this.editingProductId, product)
-      .subscribe(() => {
-        this.notification.create(
-          'success',
-          'Successfully edited!',
-          'You can check edited product.'
-        );
+  @Notification(
+    'success',
+    'Successfully edited the product!',
+    'Failed to edit the product'
+  )
+  private updateProduct(product: IProduct): Observable<Product> {
+    return this.productService.editProduct(this.editingProductId, product).pipe(
+      tap(() => {
         this.navigateToProducts();
-      });
+      })
+    );
   }
 
-  private addProduct(product: Product): void {
-    this.productService.addProduct(product).subscribe(() => {
-      this.notification.create(
-        'success',
-        'Successfully added!',
-        'Please look at the beginning of the list.New added product added at the beginning of the list.'
-      );
-      this.navigateToProducts();
-    });
+  @Notification(
+    'success',
+    'Successfully edited the product! Please look at the beginning of the list.New added product added at the beginning of the list.',
+    'Failed to add the product'
+  )
+  private addProduct(product: IProduct): Observable<Product> {
+    return this.productService.addProduct(product).pipe(
+      tap(() => {
+        this.navigateToProducts();
+      })
+    );
   }
 
   navigateToProducts(): void {

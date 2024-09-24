@@ -1,13 +1,4 @@
 import { Route } from '@angular/router';
-import { ROOT_ROUTE } from './constants';
-
-const loadProductComponent = () =>
-  import('./pages/products/products.component');
-
-const loadProductDetailsComponent = () =>
-  import(
-    './pages/products/components/product-details/product-details.component'
-  );
 
 const loadProductFormComponent = () =>
   import('./pages/products/components/product-form/product-form.component');
@@ -15,12 +6,12 @@ const loadProductFormComponent = () =>
 export const routes: Route[] = [
   {
     path: '',
-    redirectTo: ROOT_ROUTE.products,
+    redirectTo: 'products',
     pathMatch: 'full',
   },
   {
-    path: ROOT_ROUTE.products,
-    loadComponent: loadProductComponent,
+    path: 'products',
+    loadComponent: () => import('./pages/products/products.component'),
   },
   {
     path: 'products/add',
@@ -32,10 +23,13 @@ export const routes: Route[] = [
   },
   {
     path: 'product-details/:id',
-    loadComponent: loadProductDetailsComponent,
+    loadComponent: () =>
+      import(
+        './pages/products/components/product-details/product-details.component'
+      ),
   },
   {
     path: '**',
-    redirectTo: ROOT_ROUTE.products,
+    redirectTo: 'products',
   },
 ];

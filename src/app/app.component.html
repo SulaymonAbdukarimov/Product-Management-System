@@ -53,7 +53,7 @@
             [(ngModel)]="selectedLanguage"
             (ngModelChange)="changeLanguage()"
           >
-            @for (option of languagesOptionList; track trackByValue) {
+            @for (option of languagesOptionList; track option.value) {
             <nz-option
               [nzLabel]="option.label | translate"
               [nzValue]="option.value"

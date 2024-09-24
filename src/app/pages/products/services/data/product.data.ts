@@ -1,6 +1,6 @@
-import { Product, ProductCategory, StockStatus } from '../../../../constants';
+import { Product, ProductCategory } from '../../../../constants';
 
-export const products: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     id: 1,
     name: 'Gaming Laptop',
@@ -8,7 +8,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'A high-end gaming laptop with top-tier graphics.',
     sku: 'E1001',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'Noise-canceling wireless headphones with long battery life.',
     sku: 'E1002',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'Lightweight running shoes for everyday workouts.',
     sku: 'F1001',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'A fast and reliable smartphone with a stunning display.',
     sku: 'E1003',
-    stock: StockStatus.OUT_OF_STOCK,
+    stock: false,
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'A stylish leather wallet with RFID protection.',
     sku: 'F1002',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 6,
@@ -53,7 +53,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'An ergonomic office chair with lumbar support.',
     sku: 'FUR1001',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 7,
@@ -62,7 +62,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'A programmable coffee maker with a thermal carafe.',
     sku: 'HAP1001',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 8,
@@ -71,7 +71,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'A 55-inch 4K smart TV with built-in streaming apps.',
     sku: 'E1004',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 9,
@@ -80,7 +80,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'Comfortable sneakers for daily wear.',
     sku: 'F1003',
-    stock: StockStatus.OUT_OF_STOCK,
+    stock: false,
   },
   {
     id: 10,
@@ -89,7 +89,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'A compact microwave oven with multiple cooking modes.',
     sku: 'HAP1002',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 11,
@@ -98,7 +98,7 @@ export const products: Product[] = [
     category: ProductCategory.FASHION,
     description: 'A durable backpack with multiple compartments.',
     sku: 'F1004',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 12,
@@ -107,7 +107,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'A modern LED desk lamp with adjustable brightness.',
     sku: 'HAP1003',
-    stock: StockStatus.OUT_OF_STOCK,
+    stock: false,
   },
   {
     id: 13,
@@ -116,7 +116,7 @@ export const products: Product[] = [
     category: ProductCategory.ELECTRONICS,
     description: 'Portable Bluetooth speaker with excellent sound quality.',
     sku: 'E1005',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 14,
@@ -125,7 +125,7 @@ export const products: Product[] = [
     category: ProductCategory.HOME,
     description: 'A non-slip yoga mat for your daily practice.',
     sku: 'FIT1001',
-    stock: StockStatus.IN_STOCK,
+    stock: true,
   },
   {
     id: 15,
@@ -134,6 +134,6 @@ export const products: Product[] = [
     category: ProductCategory.HOME,
     description: 'A quick-boil electric kettle with temperature control.',
     sku: 'HAP1004',
-    stock: StockStatus.OUT_OF_STOCK,
+    stock: false,
   },
 ];

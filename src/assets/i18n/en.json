@@ -27,5 +27,9 @@
   "products": "Products",
   "product_list": "Product List",
   "product_management": "Product Management",
-  "default_value": "Default Value"
+  "default_value": "Default Value",
+  "stock_detail": {
+    "in": "In Stock",
+    "out": "Out of Stock"
+  }
 }

@@ -35,7 +35,6 @@ export default class ProductDetailsComponent implements OnInit {
   private translate = inject(TranslateService);
 
   product = signal<Product | undefined>(undefined);
-  loading = signal<boolean>(true);
 
   ngOnInit(): void {
     this.loadProductById();
@@ -57,7 +56,6 @@ export default class ProductDetailsComponent implements OnInit {
       const id = Number(params['id']);
       this.productService.getProductById(id).subscribe((product) => {
         this.product.set(product);
-        this.loading.set(false);
       });
     });
   }

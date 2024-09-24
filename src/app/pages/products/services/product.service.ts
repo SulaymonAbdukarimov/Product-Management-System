@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Product } from '../../../constants';
-import { products } from './data/product.data';
+import { IProduct, Product } from '../../../constants';
+import { PRODUCTS } from './data/product.data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private products: Product[] = products;
+  private products: Product[] = PRODUCTS;
   private productsSubject = new BehaviorSubject<Product[]>(this.products);
-  private products$ = this.productsSubject.asObservable();
-
-  getProducts(): Observable<Product[]> {
-    return this.products$;
+  public get products$(): Observable<Product[]> {
+    return this.productsSubject.asObservable();
   }
 
   getProductById(id: number): Observable<Product | undefined> {
@@ -22,21 +20,21 @@ export class ProductService {
     );
   }
 
-  addProduct(product: Product): Observable<Product> {
+  addProduct(product: IProduct): Observable<Product> {
     const newProduct = { ...product, id: this.generateId() };
     const updatedProducts = [newProduct, ...this.productsSubject.getValue()];
     this.productsSubject.next(updatedProducts);
     return of(newProduct);
   }
 
-  editProduct(id: number, updatedProduct: Product): Observable<Product> {
+  editProduct(id: number, updatedProduct: IProduct): Observable<Product> {
     const updatedProducts = this.productsSubject
       .getValue()
       .map((product) =>
         product.id === id ? { ...updatedProduct, id } : product
       );
     this.productsSubject.next(updatedProducts);
-    return of(updatedProduct);
+    return of({ ...updatedProduct, id });
   }
 
   deleteProduct(id: number): Observable<boolean> {

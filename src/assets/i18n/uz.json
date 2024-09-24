@@ -27,5 +27,9 @@
   "products": "Mahsulotlar",
   "product_list": "Mahsulotlar ro'yxati",
   "product_management": "Mahsulot boshqaruvi",
-  "default_value": "Standart qiymat"
+  "default_value": "Standart qiymat",
+  "stock_detail": {
+    "in": "Omborda",
+    "out": "Omborda yo'q"
+  }
 }

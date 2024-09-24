@@ -21,6 +21,8 @@
     {{ "add_product" | translate }}
   </button>
 </div>
+<!-- #region DESKTOP -->
+@if (!isMobile()) {
 
 <nz-table
   #basicTable
@@ -44,7 +46,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (product of basicTable.data; track trackByProductId) {
+    @for (product of basicTable.data; track product.id) {
     <tr
       [routerLink]="['/product-details', product.id]"
       class="product-row"
@@ -54,9 +56,15 @@
       <td>{{ product.name }}</td>
       <td>{{ product.price }}</td>
       <td>{{ product.category }}</td>
-      <td>{{ product.stock }}</td>
       <td>
-        <span class="action__btns-container desktop">
+        {{
+          product?.stock
+            ? ("stock_detail.in" | translate)
+            : ("stock_detail.out" | translate)
+        }}
+      </td>
+      <td>
+        <span class="action__btns-container">
           <button
             nz-button
             nzType="primary"
@@ -75,27 +83,53 @@
             {{ "delete" | translate }}
           </button>
         </span>
-        <span class="action__btns-container mobile">
-          <nz-button-group style="gap: 10px">
-            <span
-              nz-icon
-              nzType="edit"
-              nzTheme="fill"
-              class="edit__icon"
-              (click)="editProduct($event, product.id)"
-            ></span>
-
-            <span
-              nz-icon
-              nzType="delete"
-              class="delete__icon"
-              nzTheme="fill"
-              (click)="deleteProduct($event, product.id)"
-            ></span>
-          </nz-button-group>
-        </span>
       </td>
     </tr>
     }
   </tbody>
 </nz-table>
+}
+<!-- #endregion DESKTOP  -->
+
+<!-- #region MOBILE -->
+@if (isMobile()) {
+<div class="product-cards">
+  @for (product of allProducts(); track product.id) {
+  <div class="product-card" [routerLink]="['/product-details', product.id]">
+    <nz-card nzTitle="{{ product.name }}" nzExtra="{{ product.category }}">
+      <p>{{ "id" | translate }}: {{ product.id }}</p>
+      <p>{{ "price" | translate }}: {{ product.price }}</p>
+      <p>
+        {{ "stock_status" | translate }}:
+        {{
+          product.stock
+            ? ("stock_detail.in" | translate)
+            : ("stock_detail.out" | translate)
+        }}
+      </p>
+      <div class="action__btns-container">
+        <button
+          nz-button
+          nzType="primary"
+          (click)="editProduct($event, product.id)"
+          aria-label="Edit Product"
+        >
+          {{ "edit" | translate }}
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="deleteProduct($event, product.id)"
+          aria-label="Delete Product"
+        >
+          {{ "delete" | translate }}
+        </button>
+      </div>
+    </nz-card>
+  </div>
+  }
+</div>
+}
+
+<!-- #endregion MOBILE -->

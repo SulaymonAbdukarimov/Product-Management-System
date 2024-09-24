@@ -1,11 +1,15 @@
-export interface Product {
-  id: number;
+export interface IProduct {
+  id?: number;
   name: string;
   price: number;
   category: ProductCategory;
   description?: string;
-  stock: StockStatus;
+  stock: boolean;
   sku: string;
+}
+
+export interface Product extends IProduct {
+  id: number;
 }
 
 export enum ProductCategory {
@@ -15,12 +19,6 @@ export enum ProductCategory {
   HOME = 'Home',
   TOYS = 'Toys',
 }
-
-export enum StockStatus {
-  IN_STOCK = 'In Stock',
-  OUT_OF_STOCK = 'Out of Stock',
-}
-
 export interface ProductFormModel {
   name: string;
   price: number;

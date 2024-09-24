@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -9,6 +16,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AVAILABLE_LANGS } from './constants';
 import { StorageService } from './shared/services';
+
+export let AppInjector: Injector;
 
 const MOBILE_BREAKPOINT = 768;
 @Component({
@@ -36,6 +45,10 @@ export class AppComponent implements OnInit {
   readonly languagesOptionList = AVAILABLE_LANGS;
   isMobile = signal<boolean>(false);
 
+  constructor(injector: Injector) {
+    AppInjector = injector;
+  }
+
   ngOnInit(): void {
     this.isMobile.set(window.innerWidth < MOBILE_BREAKPOINT);
     const currentLanguage = this.storageService.lang;
@@ -52,9 +65,5 @@ export class AppComponent implements OnInit {
   changeLanguage() {
     this.storageService.lang = this.selectedLanguage;
     this.translateService.use(this.selectedLanguage);
-  }
-
-  trackByValue(index: number, language: { value: string; label: string }) {
-    return language.value;
   }
 }
