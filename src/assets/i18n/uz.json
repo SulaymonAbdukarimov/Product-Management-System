@@ -24,6 +24,7 @@
   "sku_required": "Mahsulot kodi majburiy",
   "is_stock_available": "Omborda mavjud",
   "submit": "Yuborish",
+  "save":"Saqlash",
   "products": "Mahsulotlar",
   "product_list": "Mahsulotlar ro'yxati",
   "product_management": "Mahsulot boshqaruvi",
@@ -32,4 +33,5 @@
     "in": "Omborda",
     "out": "Omborda yo'q"
   }
+
 }

@@ -6,7 +6,6 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
